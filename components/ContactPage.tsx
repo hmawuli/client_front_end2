@@ -7,12 +7,24 @@ import { EnvelopeIcon, PhoneIcon, MapPinIcon } from './icons';
 const ContactPage: React.FC = () => {
     const context = useContext(PageContext);
     const [submitted, setSubmitted] = useState(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        message: '',
+    });
 
     if (!context) {
         return <div>Loading...</div>;
     }
 
     const { content, setContent, isEditing } = context;
+
+    const handleFormUpdate = (field: keyof typeof formData, value: string) => {
+        setFormData(prev => ({
+            ...prev,
+            [field]: value
+        }));
+    };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -63,15 +75,37 @@ const ContactPage: React.FC = () => {
                                 <form onSubmit={handleSubmit} className="space-y-6">
                                     <div>
                                         <label htmlFor="name" className="block text-sm font-medium text-text-secondary">Full Name</label>
-                                        <input type="text" name="name" id="name" required className="mt-1 block w-full px-3 py-2 border border-base-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary bg-base-100" />
+                                        <EditableText
+                                            isEditing={true}
+                                            value={formData.name}
+                                            onSave={(value) => handleFormUpdate('name', value)}
+                                            className="mt-1 block w-full px-3 py-2 border border-base-300 rounded-md shadow-sm bg-base-100"
+                                            placeholder="Enter your full name"
+                                            tag="div"
+                                        />
                                     </div>
                                     <div>
                                         <label htmlFor="email" className="block text-sm font-medium text-text-secondary">Email Address</label>
-                                        <input type="email" name="email" id="email" required className="mt-1 block w-full px-3 py-2 border border-base-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary bg-base-100" />
+                                        <EditableText
+                                            isEditing={true}
+                                            value={formData.email}
+                                            onSave={(value) => handleFormUpdate('email', value)}
+                                            className="mt-1 block w-full px-3 py-2 border border-base-300 rounded-md shadow-sm bg-base-100"
+                                            placeholder="Enter your email address"
+                                            tag="div"
+                                        />
                                     </div>
                                     <div>
                                         <label htmlFor="message" className="block text-sm font-medium text-text-secondary">Message</label>
-                                        <textarea name="message" id="message" rows={5} required className="mt-1 block w-full px-3 py-2 border border-base-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary bg-base-100"></textarea>
+                                        <EditableText
+                                            isEditing={true}
+                                            value={formData.message}
+                                            onSave={(value) => handleFormUpdate('message', value)}
+                                            className="mt-1 block w-full px-3 py-2 border border-base-300 rounded-md shadow-sm bg-base-100 min-h-[120px]"
+                                            placeholder="Your message"
+                                            tag="div"
+                                            isTextarea={true}
+                                        />
                                     </div>
                                     <div>
                                         <button type="submit" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:opacity-90 transition-opacity">
