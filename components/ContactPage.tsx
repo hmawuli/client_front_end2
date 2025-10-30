@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { PageContext } from '../App';
 import PublicLayout from './PublicLayout';
+import EditableText from './EditableText';
 import { EnvelopeIcon, PhoneIcon, MapPinIcon } from './icons';
 
 const ContactPage: React.FC = () => {
@@ -11,21 +12,41 @@ const ContactPage: React.FC = () => {
         return <div>Loading...</div>;
     }
 
-    const { content } = context;
+    const { content, setContent, isEditing } = context;
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSubmitted(true);
     };
 
+    const handleContactUpdate = (field: keyof typeof content.contact, value: string) => {
+        setContent(prev => ({
+            ...prev,
+            contact: {
+                ...prev.contact,
+                [field]: value
+            }
+        }));
+    };
+
     return (
         <PublicLayout>
             <main>
                 <section className="bg-base-200 py-20 px-8 text-center">
-                    <h1 className="text-5xl font-bold text-text-primary">{content.contact.title}</h1>
-                    <p className="mt-4 max-w-2xl mx-auto text-lg text-text-secondary">
-                        {content.contact.text}
-                    </p>
+                    <EditableText
+                        isEditing={isEditing}
+                        value={content.contact.title}
+                        onSave={(value) => handleContactUpdate('title', value)}
+                        className="text-5xl font-bold text-text-primary"
+                        tag="h1"
+                    />
+                    <EditableText
+                        isEditing={isEditing}
+                        value={content.contact.text}
+                        onSave={(value) => handleContactUpdate('text', value)}
+                        className="mt-4 max-w-2xl mx-auto text-lg text-text-secondary"
+                        tag="p"
+                    />
                 </section>
                 
                 <section className="py-20 px-8">
@@ -68,21 +89,39 @@ const ContactPage: React.FC = () => {
                                 <div className="flex-shrink-0 text-primary pt-1"><MapPinIcon/></div>
                                 <div>
                                     <h3 className="font-semibold text-text-primary">Our Office</h3>
-                                    <p className="text-text-secondary">123 Innovation Drive, Tech City, 12345</p>
+                                    <EditableText
+                                        isEditing={isEditing}
+                                        value={content.contact.address}
+                                        onSave={(value) => handleContactUpdate('address', value)}
+                                        className="text-text-secondary"
+                                        tag="p"
+                                    />
                                 </div>
                              </div>
                              <div className="flex items-start space-x-4">
                                 <div className="flex-shrink-0 text-primary pt-1"><EnvelopeIcon/></div>
                                 <div>
                                     <h3 className="font-semibold text-text-primary">Email Us</h3>
-                                    <p className="text-text-secondary">contact@wowlogbook.com</p>
+                                    <EditableText
+                                        isEditing={isEditing}
+                                        value={content.contact.email}
+                                        onSave={(value) => handleContactUpdate('email', value)}
+                                        className="text-text-secondary"
+                                        tag="p"
+                                    />
                                 </div>
                              </div>
                              <div className="flex items-start space-x-4">
                                 <div className="flex-shrink-0 text-primary pt-1"><PhoneIcon/></div>
                                 <div>
                                     <h3 className="font-semibold text-text-primary">Call Us</h3>
-                                    <p className="text-text-secondary">(123) 456-7890</p>
+                                    <EditableText
+                                        isEditing={isEditing}
+                                        value={content.contact.phone}
+                                        onSave={(value) => handleContactUpdate('phone', value)}
+                                        className="text-text-secondary"
+                                        tag="p"
+                                    />
                                 </div>
                              </div>
                         </div>

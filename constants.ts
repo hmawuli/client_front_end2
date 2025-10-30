@@ -63,7 +63,10 @@ export const INITIAL_PAGE_CONTENT: PageContent = {
   },
   contact: {
     title: 'Get In Touch',
-    text: 'Have questions? We\'d love to hear from you. Reach out to our team for support or inquiries.'
+    text: 'Have questions? We\'d love to hear from you. Reach out to our team for support or inquiries.',
+    address: '123 Innovation Drive, Tech City, 12345',
+    email: 'contact@wowlogbook.com',
+    phone: '(123) 456-7890'
   }
 };
 

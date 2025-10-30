@@ -37,6 +37,9 @@ export interface PageContent {
   contact: {
     title: string;
     text: string;
+    address: string;
+    email: string;
+    phone: string;
   };
 }
 
