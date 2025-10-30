@@ -38,20 +38,54 @@ const RootRedirect: React.FC = () => {
     return authContext?.isAuthenticated ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />;
 }
 
-const PageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [content, setContent] = useState<PageContent>(INITIAL_PAGE_CONTENT);
-  const [theme, setThemeState] = useState<Theme>(THEMES[0]);
+const PageProvider: React.FC<{ children: React.ReactNode; isEditing?: boolean }> = ({ children, isEditing = false }) => {
+  const [content, setContent] = useState<PageContent>(() => {
+    try {
+      const savedContent = window.localStorage.getItem('pageContent');
+      return savedContent ? JSON.parse(savedContent) : INITIAL_PAGE_CONTENT;
+    } catch (error) {
+      console.error("Error reading page content from localStorage", error);
+      return INITIAL_PAGE_CONTENT;
+    }
+  });
+  const [theme, setThemeState] = useState<Theme>(() => {
+    try {
+      const savedTheme = window.localStorage.getItem('pageTheme');
+      return savedTheme ? JSON.parse(savedTheme) : THEMES[0];
+    } catch (error) {
+      console.error("Error reading page theme from localStorage", error);
+      return THEMES[0];
+    }
+  });
+
 
   useEffect(() => {
     document.body.className = theme.className;
   }, [theme]);
+  
+  useEffect(() => {
+    try {
+        window.localStorage.setItem('pageContent', JSON.stringify(content));
+    } catch (error) {
+        console.error("Error saving page content to localStorage", error);
+    }
+  }, [content]);
+
+  useEffect(() => {
+    try {
+        window.localStorage.setItem('pageTheme', JSON.stringify(theme));
+    } catch (error) {
+        console.error("Error saving page theme to localStorage", error);
+    }
+  }, [theme]);
+
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
   };
 
   return (
-    <PageContext.Provider value={{ content, setContent, theme, setTheme, isEditing: true }}>
+    <PageContext.Provider value={{ content, setContent, theme, setTheme, isEditing }}>
       {children}
     </PageContext.Provider>
   );
@@ -84,7 +118,7 @@ const App: React.FC = () => {
           
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={
-              <PageProvider>
+              <PageProvider isEditing={true}>
                 <Dashboard />
               </PageProvider>
             } />
