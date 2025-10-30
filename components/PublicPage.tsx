@@ -45,6 +45,21 @@ const PublicPage: React.FC = () => {
     });
   };
 
+  const addServiceItem = () => {
+    const newService = {
+      icon: 'Pencil',
+      title: 'New Service',
+      description: 'Describe your new service here.'
+    };
+    setContent(prev => ({
+      ...prev,
+      services: {
+        ...prev.services,
+        items: [...prev.services.items, newService]
+      }
+    }));
+  };
+
   const handleHeroImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -160,6 +175,19 @@ const PublicPage: React.FC = () => {
                 </div>
               ))}
             </div>
+            {isEditing && (
+              <div className="mt-12">
+                <button
+                  onClick={addServiceItem}
+                  className="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-opacity"
+                >
+                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 -ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  Add Service
+                </button>
+              </div>
+            )}
           </div>
         </section>
         
