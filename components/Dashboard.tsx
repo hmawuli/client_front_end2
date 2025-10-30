@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import { PageContext, AuthContext } from '../App';
 import Editor from './Editor';
 import Analytics from './Analytics';
-import { EyeIcon, ChartPieIcon, PencilSquareIcon, CheckCircleIcon, ArrowLeftOnRectangleIcon, CloudArrowUpIcon, ExclamationTriangleIcon } from './icons';
+import { EyeIcon, ChartPieIcon, PencilSquareIcon, CheckCircleIcon, ArrowLeftOnRectangleIcon, CloudArrowUpIcon, ExclamationTriangleIcon, ComputerDesktopIcon } from './icons';
 import type { PageContextType, AuthContextType, PageContent, Theme } from '../types';
+import PublicPage from './PublicPage';
 
 
 const Dashboard: React.FC = () => {
@@ -14,6 +15,7 @@ const Dashboard: React.FC = () => {
 
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
   const [isPublished, setIsPublished] = useState(false);
   
@@ -114,14 +116,22 @@ const Dashboard: React.FC = () => {
             <TabButton tabName="analytics" icon={<ChartPieIcon />}>Analytics</TabButton>
           </nav>
           <div className="mt-auto">
-            <button onClick={logout} className="flex items-center space-x-3 px-4 py-3 w-full text-left rounded-lg transition-colors hover:bg-base-300 text-text-secondary">
-               <ArrowLeftOnRectangleIcon />
-              <span className="font-medium">Logout</span>
+            <button
+                onClick={() => setShowPreviewModal(true)}
+                disabled={!hasUnsavedChanges}
+                className="flex items-center space-x-3 px-4 py-3 w-full text-left rounded-lg transition-colors text-text-secondary disabled:text-text-secondary/50 disabled:cursor-not-allowed enabled:hover:bg-base-300"
+            >
+                <ComputerDesktopIcon />
+                <span className="font-medium">Preview Changes</span>
             </button>
             <Link to="/public" target="_blank" className="flex items-center space-x-3 px-4 py-3 w-full text-left rounded-lg transition-colors hover:bg-base-300 text-text-secondary">
                <EyeIcon />
               <span className="font-medium">View Public Page</span>
             </Link>
+             <button onClick={logout} className="flex items-center space-x-3 px-4 py-3 w-full text-left rounded-lg transition-colors hover:bg-base-300 text-text-secondary">
+               <ArrowLeftOnRectangleIcon />
+              <span className="font-medium">Logout</span>
+            </button>
             <button
                 onClick={() => setShowConfirmModal(true)}
                 disabled={!hasUnsavedChanges || isPublishing}
@@ -174,6 +184,29 @@ const Dashboard: React.FC = () => {
                     >
                         Cancel
                     </button>
+                </div>
+            </div>
+        </div>
+      )}
+
+      {showPreviewModal && (
+        <div className="fixed inset-0 bg-base-100 z-50 flex flex-col" aria-modal="true" role="dialog">
+            <header className="flex-shrink-0 bg-base-200 p-4 border-b border-base-300 flex justify-between items-center">
+                <h3 className="text-lg font-bold text-text-primary">
+                    Live Preview
+                </h3>
+                <button
+                    onClick={() => setShowPreviewModal(false)}
+                    className="px-4 py-2 bg-primary text-white rounded-md hover:opacity-90 transition-opacity"
+                >
+                    Close Preview
+                </button>
+            </header>
+            <div className="flex-1 overflow-y-auto bg-base-300">
+                <div className="max-w-7xl mx-auto my-8 shadow-2xl">
+                    <PageContext.Provider value={{ ...pageContext, isEditing: false }}>
+                        <PublicPage />
+                    </PageContext.Provider>
                 </div>
             </div>
         </div>
