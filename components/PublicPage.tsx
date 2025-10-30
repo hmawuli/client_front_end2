@@ -2,6 +2,7 @@
 import React, { useContext } from 'react';
 import { PageContext } from '../App';
 import EditableText from './EditableText';
+import PublicLayout from './PublicLayout';
 import { ChartBarIcon, PencilIcon, CloudIcon } from './icons';
 import type { PageContextType } from '../types';
 
@@ -44,22 +45,40 @@ const PublicPage: React.FC = () => {
     });
   };
 
-  return (
-    <div className="bg-base-100 text-text-primary font-sans">
-      <header className="py-4 px-8 border-b border-base-300">
-          <EditableText
-            isEditing={isEditing}
-            value={content.logo}
-            onSave={(value) => setContent(prev => ({...prev, logo: value}))}
-            className="text-2xl font-bold text-primary"
-            />
-      </header>
+  const handleHeroImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          setContent(prev => ({
+            ...prev,
+            hero: {
+              ...prev.hero,
+              imageUrl: reader.result,
+            },
+          }));
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
+  return (
+    <PublicLayout>
       <main>
         {/* Hero Section */}
-        <section className="relative h-[600px] text-white">
+        <section className="relative h-[600px] text-white group">
           <img src={content.hero.imageUrl} alt="Hero Background" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/50"></div>
+          {isEditing && (
+            <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <label className="bg-white text-gray-800 px-6 py-3 rounded-md font-bold cursor-pointer hover:bg-gray-200 transition-colors">
+                Change Hero Image
+                <input type="file" accept="image/*" className="hidden" onChange={handleHeroImageUpload} />
+              </label>
+            </div>
+          )}
           <div className="relative z-10 flex flex-col items-center justify-center h-full text-center p-8">
             <EditableText
               isEditing={isEditing}
@@ -164,13 +183,8 @@ const PublicPage: React.FC = () => {
               tag="p"
             />
         </section>
-
       </main>
-
-      <footer className="bg-base-200 py-6 px-8 text-center text-text-secondary border-t border-base-300">
-        <p>&copy; {new Date().getFullYear()} {content.logo}. All Rights Reserved.</p>
-      </footer>
-    </div>
+    </PublicLayout>
   );
 };
 

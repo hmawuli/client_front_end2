@@ -6,6 +6,8 @@ import Dashboard from './components/Dashboard';
 import PublicPage from './components/PublicPage';
 import Login from './components/Login';
 import Register from './components/Register';
+import AboutPage from './components/AboutPage';
+import ContactPage from './components/ContactPage';
 
 export const PageContext = createContext<PageContextType | null>(null);
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -91,6 +93,16 @@ const App: React.FC = () => {
           <Route path="/public" element={
              <PageProvider>
                 <PublicPage />
+             </PageProvider>
+          } />
+          <Route path="/about" element={
+             <PageProvider>
+                <AboutPage />
+             </PageProvider>
+          } />
+          <Route path="/contact" element={
+             <PageProvider>
+                <ContactPage />
              </PageProvider>
           } />
           
