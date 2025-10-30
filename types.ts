@@ -29,7 +29,6 @@ export interface PageContent {
   about: {
     title: string;
     text: string;
-    imageUrl: string;
   };
   services: {
     title: string;

@@ -40,7 +40,6 @@ export const INITIAL_PAGE_CONTENT: PageContent = {
   about: {
     title: 'About Our Mission',
     text: "We believe that tracking your journey is the first step towards mastery. Our platform provides the tools you need to visualize your progress, stay motivated, and connect with a community of like-minded individuals. Whether you're a professional, a student, or a hobbyist, we're here to support your growth.",
-    imageUrl: 'https://picsum.photos/800/600?random=2',
   },
   services: {
     title: 'Features We Offer',

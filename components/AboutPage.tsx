@@ -19,7 +19,7 @@ const AboutPage: React.FC = () => {
                 </section>
 
                 <section className="py-20 px-8">
-                    <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                    <div className="max-w-4xl mx-auto text-center">
                         <div className="space-y-4">
                              <h2 className="text-3xl font-bold text-text-primary">Our Story</h2>
                              <p className="text-text-secondary leading-relaxed">{content.about.text}</p>
@@ -27,7 +27,6 @@ const AboutPage: React.FC = () => {
                                 Founded on the principle of empowerment, we strive to deliver tools that are not only powerful but also a joy to use. Our journey is one of continuous innovation and dedication to our users' success.
                              </p>
                         </div>
-                        <img src={content.about.imageUrl} alt="About us" className="rounded-lg shadow-xl" />
                     </div>
                 </section>
 

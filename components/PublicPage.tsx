@@ -108,25 +108,22 @@ const PublicPage: React.FC = () => {
 
         {/* About Section */}
         <section className="py-20 px-8">
-          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <EditableText
-                isEditing={isEditing}
-                value={content.about.title}
-                onSave={(value) => handleTextUpdate('about', 'title', value)}
-                className="text-4xl font-bold text-text-primary mb-4"
-                tag="h2"
-              />
-               <EditableText
-                isEditing={isEditing}
-                value={content.about.text}
-                onSave={(value) => handleTextUpdate('about', 'text', value)}
-                className="text-text-secondary leading-relaxed"
-                tag="p"
-                isTextarea={true}
-              />
-            </div>
-             <img src={content.about.imageUrl} alt="About us" className="rounded-lg shadow-xl" />
+          <div className="max-w-4xl mx-auto text-center">
+            <EditableText
+              isEditing={isEditing}
+              value={content.about.title}
+              onSave={(value) => handleTextUpdate('about', 'title', value)}
+              className="text-4xl font-bold text-text-primary mb-4"
+              tag="h2"
+            />
+             <EditableText
+              isEditing={isEditing}
+              value={content.about.text}
+              onSave={(value) => handleTextUpdate('about', 'text', value)}
+              className="text-text-secondary leading-relaxed max-w-3xl mx-auto"
+              tag="p"
+              isTextarea={true}
+            />
           </div>
         </section>
 
