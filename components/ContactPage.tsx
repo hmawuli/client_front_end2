@@ -12,6 +12,7 @@ const ContactPage: React.FC = () => {
         email: '',
         message: '',
     });
+    const [emailError, setEmailError] = useState('');
 
     if (!context) {
         return <div>Loading...</div>;
@@ -19,15 +20,40 @@ const ContactPage: React.FC = () => {
 
     const { content, setContent, isEditing } = context;
 
+    const validateEmail = (email: string) => {
+        if (!email) return false;
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    };
+
     const handleFormUpdate = (field: keyof typeof formData, value: string) => {
         setFormData(prev => ({
             ...prev,
             [field]: value
         }));
+        if (field === 'email') {
+            if (value && !validateEmail(value)) {
+                setEmailError('Please enter a valid email address.');
+            } else {
+                setEmailError('');
+            }
+        }
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (!formData.email) {
+            setEmailError('Email address is required.');
+            return;
+        }
+
+        if (!validateEmail(formData.email)) {
+            setEmailError('Please enter a valid email address.');
+            return;
+        }
+        
+        setEmailError('');
         setSubmitted(true);
     };
 
@@ -90,10 +116,11 @@ const ContactPage: React.FC = () => {
                                             isEditing={true}
                                             value={formData.email}
                                             onSave={(value) => handleFormUpdate('email', value)}
-                                            className="mt-1 block w-full px-3 py-2 border border-base-300 rounded-md shadow-sm bg-base-100"
+                                            className={`mt-1 block w-full px-3 py-2 border ${emailError ? 'border-red-500' : 'border-base-300'} rounded-md shadow-sm bg-base-100`}
                                             placeholder="Enter your email address"
                                             tag="div"
                                         />
+                                        {emailError && <p className="mt-2 text-sm text-red-600">{emailError}</p>}
                                     </div>
                                     <div>
                                         <label htmlFor="message" className="block text-sm font-medium text-text-secondary">Message</label>
