@@ -1,0 +1,5 @@
+{
+  "name": "Copy of React CMS Dashboard",
+  "description": "A client-facing CMS application to customize web pages and view analytics. Built with React, TypeScript, and Tailwind CSS, it features an intuitive dashboard for live content editing, theme selection, and a detailed analytics view with charts and CSV export functionality.",
+  "requestFramePermissions": []
+}
